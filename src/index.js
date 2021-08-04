@@ -33,11 +33,12 @@ function onSearch(event) {
   }
 
   photosApiService.resetPage();
-  photosApiService.getPhotos().then(appendPhotoCardsMarkup);
+  loadPhotosAndUpdateUI();
 }
 
 function onLoadMore() {
-  photosApiService.getPhotos().then(appendPhotoCardsMarkup);
+  photosApiService.resetPage();
+  loadPhotosAndUpdateUI();
 }
 
 function appendPhotoCardsMarkup(data) {
@@ -61,4 +62,13 @@ function appendPhotoCardsMarkup(data) {
 
 function clearPhotoCardsMarkup() {
   refs.galleryCardsContainer.innerHTML = '';
+}
+
+async function loadPhotosAndUpdateUI() {
+  try {
+    const photos = await photosApiService.getPhotos();
+    appendPhotoCardsMarkup(photos);
+  } catch (error) {
+    console.log(error);
+  }
 }
